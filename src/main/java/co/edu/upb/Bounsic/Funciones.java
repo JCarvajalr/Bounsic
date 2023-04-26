@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Funciones {
     static Scanner sc = new Scanner(System.in);
+
     public static boolean reproducirCancion(Cancion cancion) {
         String[] cancionSeparada = cancion.getLetra().split("\r\n|\r|\n");
         System.out.println(
@@ -47,19 +48,14 @@ public class Funciones {
             while (seguirReproduciendo.get()) {
                 String input = scanner.nextLine();
                 if (input.equals("p")) {
-                    System.out.println("Canción pausada. Presione la letra 'r' para reanudar.");
-                    pausado.set(true);
+                    pausarCancion(pausado);
                 } else if (input.equals("r")) {
-                    System.out.println("Reanudando canción...");
-                    pausado.set(false);
-                    synchronized (pausado) {
-                        pausado.notifyAll();
-                    }
+                    reanudarCancion(pausado);
                 } else if (input.equals("e")) {
-                    System.out.println("Terminando la canción...");
-                    seguirReproduciendo.set(false);
+                    terminarCancion(seguirReproduciendo);
                     break;
                 }
+
             }
             // scanner.close();
             // latch.countDown();
@@ -77,7 +73,28 @@ public class Funciones {
         return true;
     }
 
-    public static List<Cancion> buscarPorNombre(BibliotecaCanciones biblioteca, String nombre)	{
+    public static boolean pausarCancion(AtomicBoolean pausado) {
+        System.out.println("Canción pausada. Presione la letra 'r' para reanudar.");
+        pausado.set(true);
+        return true;
+    }
+
+    public static boolean reanudarCancion(AtomicBoolean pausado) {
+        System.out.println("Reanudando canción...");
+        pausado.set(false);
+        synchronized (pausado) {
+            pausado.notifyAll();
+        }
+        return true;
+    }
+
+    public static boolean terminarCancion(AtomicBoolean seguirReproduciendo) {
+        System.out.println("Terminando la canción...");
+        seguirReproduciendo.set(false);
+        return true;
+    }
+
+    public static List<Cancion> buscarPorNombre(BibliotecaCanciones biblioteca, String nombre) {
         System.out.println("Canciones con el nombre \"" + nombre + "\":");
         System.out.println("------------------------");
 
