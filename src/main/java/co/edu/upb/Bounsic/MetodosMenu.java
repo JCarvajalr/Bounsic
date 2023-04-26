@@ -2,9 +2,11 @@ package co.edu.upb.Bounsic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class MetodosMenu {
+
     public static boolean buscarCacion(BibliotecaCanciones biblioteca, Scanner sc) {
         List<Cancion> cancionesEncontradas = new ArrayList<>();
         boolean opcionValida = false;
@@ -43,8 +45,8 @@ public class MetodosMenu {
         return true;
     }
 
-    public static boolean cancionAleatoria(BibliotecaCanciones biblioteca) {
-        Cancion cancionAleatoria = Funciones.buscarCancionAleatoria(biblioteca);
+    public static boolean cancionAleatoria(BibliotecaCanciones biblioteca, Scanner sc) {
+        Cancion cancionAleatoria = Funciones.buscarCancionAleatoria(biblioteca, sc);
 
         System.out.println("Canción aleatoria seleccionada:");
         System.out.println("Nombre: " + cancionAleatoria.getNombre());
@@ -53,19 +55,3 @@ public class MetodosMenu {
         Funciones.reproducirCancion(cancionAleatoria);
         return true;
     }
-    public static boolean listaReproduccionHits (BibliotecaCanciones biblioteca,Scanner sc) {
-        System.out.println("\nPlaylist Recomendada.\n");
-        System.out.println("Reproduciendo Playlist...\n");
-        List<Cancion> canciones = biblioteca.getCanciones();
-        int[] indices = {1, 5, 7, 8, 11, 14, 16};
-        for (int i = 0; i < indices.length; i++) {
-            Cancion cancion = canciones.get(indices[i]);
-            System.out.println(cancion.getNombre() + "\n");
-            Funciones.reproducirCancion(cancion);
-            System.out.println("\n");
-        }
-        return true;
-
-    }
-
-}
