@@ -14,7 +14,8 @@ public class Menu {
             System.out.println("2. Ver la biblioteca de canciones");
             System.out.println("3. Cancion aleatoria");
             System.out.println("4. Lista de hits");
-            System.out.println("5. Cerrar sesión");
+            System.out.println("5. Crear lista de 7 canciones aleatorias");
+            System.out.println("6. Cerrar sesión");
             opcion = sc.nextLine();
 
             switch (opcion) {
@@ -35,6 +36,10 @@ public class Menu {
                     break;
                 //-------------------------------------------------------------------------------------//
                 case "5":
+                    MetodosMenu.crearListaCancionesAleatorias(biblioteca, sc);                    
+                    break;
+                //-------------------------------------------------------------------------------------//
+                case "6":
                     System.out.println("Sesión cerrada.");
                     menu = false;
                     break;
