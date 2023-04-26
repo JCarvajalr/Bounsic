@@ -8,73 +8,76 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Funciones {
-
     static Scanner sc = new Scanner(System.in);
-
     public static boolean reproducirCancion(Cancion cancion) {
         String[] cancionSeparada = cancion.getLetra().split("\r\n|\r|\n");
-        System.out.println("Reproduciendo canción. Presione la letra 'p' para pausar y 'r' para reanudar.");
-        AtomicBoolean pausado = new AtomicBoolean(false); // para llevar registro de si la canción está pausada o no
-        CountDownLatch latch = new CountDownLatch(1); // para esperar a que termine la reproducción de la canción
+        System.out.println(
+                "Reproduciendo canción. Presione la letra 'p' para pausar, 'r' para reanudar y 'e' para terminar.");
+        AtomicBoolean pausado = new AtomicBoolean(false);
+        CountDownLatch latch = new CountDownLatch(1);
+        AtomicBoolean seguirReproduciendo = new AtomicBoolean(true);
 
-        // Hilo para reproducir la canción
         Thread hiloReproduccion = new Thread(() -> {
             for (String linea : cancionSeparada) {
                 synchronized (pausado) {
                     while (pausado.get()) {
                         try {
-                            pausado.wait(); // Esperar hasta que la canción se reanude
+                            pausado.wait();
                         } catch (InterruptedException ex) {
                             ex.printStackTrace();
                         }
                     }
                 }
-                System.out.println(linea); // mostrar la línea actual
+                if (!seguirReproduciendo.get()) {
+                    break;
+                }
+                System.out.println(linea);
                 try {
-                    Thread.sleep(1000); // esperar 1 segundo antes de mostrar la siguiente línea
+                    Thread.sleep(1000);
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
                 }
             }
-            System.out.println("LA CANCION HA ACABADO.");
-            latch.countDown(); // reducir el contador para indicar que la canción ha terminado
+            seguirReproduciendo.set(false);
+            latch.countDown();
         });
 
-        // Hilo para monitorear la entrada del usuario
         Thread hiloEntrada = new Thread(() -> {
             Scanner scanner = new Scanner(System.in);
-            while (scanner.hasNextLine()) { // Detectar si se ingresó una línea por teclado
+            while (seguirReproduciendo.get()) {
                 String input = scanner.nextLine();
-                if (input.equals("p")) { // Si se ingresó la letra "p", pausar la canción
+                if (input.equals("p")) {
                     System.out.println("Canción pausada. Presione la letra 'r' para reanudar.");
-                    pausado.set(true); // Marcar la canción como pausada
-                } else if (input.equals("r")) { // Si se ingresó la letra "r", reanudar la canción
+                    pausado.set(true);
+                } else if (input.equals("r")) {
                     System.out.println("Reanudando canción...");
-                    pausado.set(false); // Marcar la canción como no pausada
+                    pausado.set(false);
                     synchronized (pausado) {
-                        pausado.notifyAll(); // Despertar el hilo de reproducción
+                        pausado.notifyAll();
                     }
-                } else if (input.equals("q")) { // Si se ingresó la letra "q", salir del programa
-                    System.out.println("Saliendo del programa...");
-                    latch.countDown(); // reducir el contador para indicar que la canción ha terminado
-                    scanner.close(); // Cerrar el objeto Scanner
-                    return; // salir del método
+                } else if (input.equals("e")) {
+                    System.out.println("Terminando la canción...");
+                    seguirReproduciendo.set(false);
+                    break;
                 }
             }
-            scanner.close(); // Cerrar el objeto Scanner al final del hilo
+            // scanner.close();
+            // latch.countDown();
         });
 
-        hiloReproduccion.start(); // Iniciar el hilo de reproducción
-        hiloEntrada.start(); // Iniciar el hilo de entrada del usuario
+        hiloReproduccion.start();
+        hiloEntrada.start();
         try {
-            latch.await(); // Esperar a que la canción
+            latch.await();
+            System.out.println("La canción ha terminado.");
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
+
         return true;
     }
 
-    public static List<Cancion> buscarPorNombre(BibliotecaCanciones biblioteca, String nombre) {
+    public static List<Cancion> buscarPorNombre(BibliotecaCanciones biblioteca, String nombre)	{
         System.out.println("Canciones con el nombre \"" + nombre + "\":");
         System.out.println("------------------------");
 
@@ -136,32 +139,11 @@ public class Funciones {
         return cancionesEncontradas;
     }
 
-    public static Cancion buscarCancionAleatoria(BibliotecaCanciones biblioteca, Scanner sc) {
+    public static Cancion buscarCancionAleatoria(BibliotecaCanciones biblioteca) {
         Random random = new Random();
-        int randomIndex = random.nextInt(biblioteca.size());
-        Cancion cancionAleatoria = biblioteca.get(randomIndex);
+        int randomIndex = random.nextInt(biblioteca.getsize());
+        Cancion cancionAleatoria = biblioteca.getCancion(randomIndex);
         return cancionAleatoria;
     }
-
-    public static List<Cancion> generarListaAleatoria(BibliotecaCanciones biblioteca, Cancion cancionActual, int numCanciones) {
-        List<Cancion> listaAleatoria = new ArrayList<>();
-        List<Cancion> todasLasCanciones = biblioteca.getCanciones();
-        Random random = new Random();
-
-        // Agregar la canción actual a la lista aleatoria
-        listaAleatoria.add(cancionActual);
-
-        // Generar una lista aleatoria de canciones diferentes a la actual
-        while (listaAleatoria.size() < numCanciones) {
-            int index = random.nextInt(todasLasCanciones.size());
-            Cancion cancionAleatoria = todasLasCanciones.get(index);
-            if (!listaAleatoria.contains(cancionAleatoria) && !cancionAleatoria.equals(cancionActual)) {
-                listaAleatoria.add(cancionAleatoria);
-            }
-        }
-
-        return listaAleatoria;
-    }
-
 
 }
