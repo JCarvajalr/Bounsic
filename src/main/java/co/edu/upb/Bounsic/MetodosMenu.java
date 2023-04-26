@@ -55,3 +55,61 @@ public class MetodosMenu {
         Funciones.reproducirCancion(cancionAleatoria);
         return true;
     }
+
+    public static boolean crearListaCancionesAleatorias(BibliotecaCanciones biblioteca, Scanner sc) {
+        List<Cancion> cancionesEncontradas = new ArrayList<>();
+        Random random = new Random();
+        List<Cancion> listaCancionesAleatorias = new ArrayList<>();
+
+        for (int i = 0; i < 7; i++) {
+            int index = random.nextInt(biblioteca.getCanciones().size());
+            Cancion cancionAleatoria = biblioteca.getCanciones().get(index);
+            listaCancionesAleatorias.add(cancionAleatoria);
+        }
+
+        System.out.println("Lista de 7 canciones aleatorias:");
+        int numCancion = 1;
+        for (Cancion cancion : listaCancionesAleatorias) {
+            System.out.println(numCancion + ". " + cancion.getNombre());
+            numCancion++;
+        }
+
+        int opcion;
+        int cancionActual = 0;
+        do {
+            System.out.println("Selecciona una opción:");
+            System.out.println("1. Reproducir canción actual");
+            System.out.println("2. Saltar canción actual");
+            System.out.println("3. Volver al menú principal");
+
+            try {
+                opcion = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Opción no válida. Intentelo");
+                continue;
+            }
+
+            switch (opcion) {
+                case 1:
+                    System.out.println("Reproduciendo: " + listaCancionesAleatorias.get(cancionActual).getNombre());
+                    Funciones.reproducirCancion(listaCancionesAleatorias.get(cancionActual));
+                    cancionActual++;
+                    break;
+                case 2:
+                    System.out.println("Saltando canción: " + listaCancionesAleatorias.get(cancionActual).getNombre());
+                    cancionActual++;
+                    break;
+                case 3:
+                    System.out.println("Volviendo al menú principal.");
+                    return false;
+                default:
+                    System.out.println("Opción no válida. Intentelo de nuevo.");
+                    break;
+            }
+        } while (cancionActual < listaCancionesAleatorias.size());
+
+        System.out.println("Lista de canciones aleatorias finalizada.");
+        return true;
+    }
+
+}
