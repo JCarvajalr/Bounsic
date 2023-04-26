@@ -1,9 +1,0 @@
-/**
- * 
- */
-/**
- * @author Kz
- *
- */
-module Bounsic {
-}
