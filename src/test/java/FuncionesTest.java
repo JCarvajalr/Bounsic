@@ -1,7 +1,7 @@
-import co.edu.upb.Bounsic.Funciones;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import co.edu.upb.Bounsic.Funciones;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -20,7 +20,7 @@ public class FuncionesTest {
   void pausarCancionTest() {
     atomicBoolean = new AtomicBoolean();
     atomicBoolean.set(false);
-    Assertions.assertEquals(true, funciones.pausarCancion(atomicBoolean));
+    assertEquals(true, funciones.pausarCancion(atomicBoolean));
 
   }
 
@@ -29,7 +29,7 @@ public class FuncionesTest {
   void reanudarCancionTest() {
     atomicBoolean = new AtomicBoolean();
     atomicBoolean.set(false);
-    Assertions.assertEquals(true, funciones.reanudarCancion(atomicBoolean));
+    assertEquals(true, funciones.reanudarCancion(atomicBoolean));
   }
 
   @Test
@@ -37,7 +37,7 @@ public class FuncionesTest {
   void terminarCancionTest() {
     atomicBoolean = new AtomicBoolean();
     atomicBoolean.set(false);
-    Assertions.assertEquals(true, funciones.terminarCancion(atomicBoolean));
+    assertEquals(true, funciones.terminarCancion(atomicBoolean));
 
   }
 }

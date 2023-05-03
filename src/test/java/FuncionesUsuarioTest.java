@@ -1,17 +1,11 @@
+
 import co.edu.upb.Bounsic.FuncionesUsuario;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertTrue;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-import co.edu.upb.Bounsic.Cancion;
-
+import static org.junit.jupiter.api.Assertions.*;
 class FuncionesUsuarioTest {
     private FuncionesUsuario funcionesUsuario;
 
@@ -25,14 +19,14 @@ class FuncionesUsuarioTest {
     @Test
     void verificarCadenaTest() {
         // Prueba con nombre mayor de 5 digitos en LowerCase
-        Assertions.assertEquals(true, funcionesUsuario.verificarCadena("patolin"));
+        assertEquals(true, funcionesUsuario.verificarCadena("patolin"));
 
     }
 
     @Test
     void verificarCorreoTest() {
         // Prueba de correo con @gmail.com
-        Assertions.assertEquals(true, funcionesUsuario.verificarCorreo("pato123@gmail.com"));
+        assertEquals(true, funcionesUsuario.verificarCorreo("pato123@gmail.com"));
     }
 
     @Test
@@ -40,7 +34,7 @@ class FuncionesUsuarioTest {
     void verificarNumeroTarjetaTest() {
         // Prueba numero tarjeta 16 dijitos
 
-        Assertions.assertEquals(true, funcionesUsuario.verificarNumeroTarjeta("8745690312579862"));
+        assertEquals(true, funcionesUsuario.verificarNumeroTarjeta("8745690312579862"));
 
     }
 
@@ -53,7 +47,7 @@ class FuncionesUsuarioTest {
         // Parsear la fecha en formato String a un objeto java.util.Date
         Date fecha = sdf.parse(fechaStr);
         // Date fecha = new Date(2024/5/11);
-        Assertions.assertEquals(true, funcionesUsuario.verificarFechaDeVencimiento(fecha));
+        assertEquals(true, funcionesUsuario.verificarFechaDeVencimiento(fecha));
 
     }
 
@@ -62,7 +56,7 @@ class FuncionesUsuarioTest {
     void verificarCodigoSeguridadTest() {
         // Numero de seguridad = 4 digitos
 
-        Assertions.assertEquals(true, funcionesUsuario.verificarCodigoSeguridad(1127));
+        assertEquals(true, funcionesUsuario.verificarCodigoSeguridad(1127));
     }
 
 }
