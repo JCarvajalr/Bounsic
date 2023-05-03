@@ -7,7 +7,7 @@ public class Menu {
     public static boolean crearMenu(BibliotecaCanciones biblioteca, Scanner sc) {
         String opcion;
         boolean menu = true;
-
+        //MENU
         while (menu) {
             System.out.println("Seleccione una opción:");
             System.out.println("1. Buscar canción");
